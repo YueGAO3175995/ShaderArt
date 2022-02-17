@@ -55,7 +55,7 @@ void main() {
     	// animate hue over time
     	hsb.r = -u_time*0.2+d;
         
-        //give r,g,b chanel a value, using u_time for animation
+        //give r,g chanel a value, using u_time for animation
         hsb.r = mod(st.x+u_time,1.) - mod(st.x,-0.);
     	hsb.g = mod(st.x+u_time,1.) - mod(st.x,0.5);
         

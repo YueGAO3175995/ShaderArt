@@ -9,17 +9,6 @@ uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 uniform float u_time;
 
-//  Function from Iñigo Quiles
-//  https://www.shadertoy.com/view/MsS3Wc
-
-vec3 hsb2rgb( in vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.816+vec3(1.584,4.000,0.633),
-                             4.952)-3.032)-0.784, //adjusting changing colors
-                     0.0,
-                     1.0 );
-    rgb = rgb*rgb*(3.5-1.300*rgb);
-    return c.z * mix( vec3(1.0), rgb, c.y);
-}
 
 //draw boxes
 //author Patricio Gonzalez Vivo & Jen Lowe

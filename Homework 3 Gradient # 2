@@ -21,11 +21,13 @@ vec2 rotate2D(vec2 _st, float _angle){
     return _st;
 }
 
-vec2 line(vec2 _st, float _zoom){
+//draw background
+vec2 bg(vec2 _st, float _zoom){
     _st *= _zoom;
     return fract(_st);
 }
 
+//draw lines by box function from author
 float box(vec2 _st, vec2 _size, float _smoothEdges){
     _size = vec2(0.5)-_size * 0.5;
     //_size = vec2(u_mouse.x * 0.004)-_size0.5;
@@ -50,8 +52,8 @@ void main(void){
     vec2 st2 = gl_FragCoord.xy/u_resolution.xy;
 
     // Divide the space in 4
-    st = line(st,5.);
-    st2 = line(st,1.);
+    st = bg(st,5.);
+    st2 = bg(st,1.);
 
     // Use a matrix to rotate the space 45 degrees
     st = rotate2D(st,PI * u_time * 0.3);

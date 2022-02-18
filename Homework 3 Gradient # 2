@@ -1,0 +1,74 @@
+// Author @patriciogv ( patriciogonzalezvivo.com ) - 2015
+//edit Doris gao
+//title: week3 homework gradient#2
+
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+#define PI 3.14159265358979323846
+
+vec2 rotate2D(vec2 _st, float _angle){
+    _st -= 0.5;
+    _st =  mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle)) * _st;
+    _st += 0.5;
+    return _st;
+}
+
+vec2 line(vec2 _st, float _zoom){
+    _st *= _zoom;
+    return fract(_st);
+}
+
+float box(vec2 _st, vec2 _size, float _smoothEdges){
+    _size = vec2(0.5)-_size * 0.5;
+    //_size = vec2(u_mouse.x * 0.004)-_size0.5;
+    vec2 aa = vec2(_smoothEdges * 0.5);
+    vec2 uv = smoothstep(_size,_size+aa,_st);
+    uv *= smoothstep(_size,_size+aa,vec2(1.0)-_st);
+    return uv.x * uv.y;
+}
+
+float box2(vec2 _st, vec2 _size, float _smoothEdges){
+    _size = vec2(0.5)-_size * 0.5;
+	//_size = vec2(u_mouse.x * 0.004)-_size * 0.5;
+    vec2 aa = vec2(_smoothEdges * 0.5);
+    vec2 uv = smoothstep(_size,_size+aa,_st);
+    uv *= smoothstep(_size,_size+aa,vec2(1.0)-_st);
+    return uv.x * uv.y;
+}
+
+void main(void){
+	// get the xy coordinate & normalize to [0, 1] range
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    vec2 st2 = gl_FragCoord.xy/u_resolution.xy;
+
+    // Divide the space in 4
+    st = line(st,5.);
+    st2 = line(st,1.);
+
+    // Use a matrix to rotate the space 45 degrees
+    st = rotate2D(st,PI * u_time * 0.3);
+    st2 = rotate2D(st2,PI * u_time * 0.8);
+
+    //layer shapes
+    float layer1 = box(st,vec2(u_time,0.1),0.01);
+    float layer2 = box(st2,vec2(u_time,0.1),0.01);
+    
+    //fragment color
+    vec3 color = vec3(u_mouse.x * 0.005,u_mouse.y * 0.005,0.574);
+    
+    // Draw a square
+    color = mix(color,vec3(0.467,0.794,u_mouse.x*0.002),layer1);
+    color = mix(color,vec3(u_mouse.x*0.002,0.560,0.794),layer2);
+    //uncode to see another color range
+ 	//color = mix(color,vec3(u_time,u_mouse.x * 0.005,0.637),layer2);
+
+    gl_FragColor = vec4(color,1.0);
+}
